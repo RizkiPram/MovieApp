@@ -2,6 +2,7 @@ package com.example.movieapp.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import com.example.movieapp.data.local.datastore.UserPreferences
 import com.example.movieapp.data.local.entity.MovieEntity
 import com.example.movieapp.data.local.entity.UpcomingMovieEntity
 import com.example.movieapp.data.local.room.MovieDao
@@ -16,9 +17,10 @@ import retrofit2.Response
 class MovieRepository private constructor(
     private val apiService: ApiService,
     private val movieDao: MovieDao,
-    private val appExecutors: AppExecutors
+    private val appExecutors: AppExecutors,
+//    private val pref:UserPreferences
 ) {
-    private val result = MediatorLiveData<Result<List<MovieEntity>>>()
+
     fun getNowPlayingMovie(): LiveData<Result<List<MovieEntity>>> {
         val result = MediatorLiveData<Result<List<MovieEntity>>>()
         result.value = Result.Loading
@@ -99,7 +101,8 @@ class MovieRepository private constructor(
         fun getInstance(
             apiService: ApiService,
             movieDao: MovieDao,
-            appExecutors: AppExecutors
+            appExecutors: AppExecutors,
+//            pref:UserPreferences
         ): MovieRepository =
             instance ?: synchronized(this) {
                 instance ?: MovieRepository(apiService, movieDao, appExecutors)

@@ -6,18 +6,23 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movieapp.adapter.NowPlayingAdapter
 import com.example.movieapp.adapter.UpcomingAdapter
+import com.example.movieapp.data.local.datastore.UserPreferences
 import com.example.movieapp.data.local.entity.MovieEntity
 import com.example.movieapp.data.local.entity.UpcomingMovieEntity
 import com.example.movieapp.databinding.ActivityMainBinding
 import com.example.movieapp.utils.Result
+import com.example.movieapp.viewmodel.AuthViewModel
+import com.example.movieapp.viewmodel.AuthViewModelFactory
 import com.example.movieapp.viewmodel.MainViewModel
 import com.example.movieapp.viewmodel.ViewModelFactory
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var authViewModel: AuthViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -31,6 +36,10 @@ class MainActivity : AppCompatActivity() {
         val viewModel: MainViewModel by viewModels {
             factory
         }
+        authViewModel = ViewModelProvider(
+            this,
+            AuthViewModelFactory(UserPreferences.getInstance(dataStore))
+        )[AuthViewModel::class.java]
         viewModel.getNowPlayingMovie().observe(this) { result ->
             if (result != null) {
                 when (result) {
@@ -72,6 +81,12 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        binding.btnLogout.setOnClickListener {
+            authViewModel.logout()
+            startActivity(Intent(this@MainActivity,LoginActivity::class.java))
+            finish()
+        }
+
     }
 
     private fun setNowPlayingMoviesData(data: List<MovieEntity>) {
