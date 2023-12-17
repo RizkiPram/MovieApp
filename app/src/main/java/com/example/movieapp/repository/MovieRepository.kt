@@ -3,6 +3,7 @@ package com.example.movieapp.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import com.example.movieapp.data.local.entity.MovieEntity
+import com.example.movieapp.data.local.entity.UpcomingMovieEntity
 import com.example.movieapp.data.local.room.MovieDao
 import com.example.movieapp.data.remote.api.ApiService
 import com.example.movieapp.data.remote.response.MovieResponse
@@ -19,6 +20,7 @@ class MovieRepository private constructor(
 ) {
     private val result = MediatorLiveData<Result<List<MovieEntity>>>()
     fun getNowPlayingMovie(): LiveData<Result<List<MovieEntity>>> {
+        val result = MediatorLiveData<Result<List<MovieEntity>>>()
         result.value = Result.Loading
         val client = apiService.getNowPlayingMovie()
         client.enqueue(object : Callback<MovieResponse> {
@@ -32,11 +34,9 @@ class MovieRepository private constructor(
                                 movie.id,
                                 movie.title,
                                 movie.posterPath,
-                                movie.backdropPath,
                                 movie.adult,
                                 movie.voteAverage,
-                                movie.overview,
-                                movie.releaseDate
+                                movie.releaseDate,
                             )
                             listMovie.add(movieItem)
                         }
@@ -49,9 +49,45 @@ class MovieRepository private constructor(
                 result.value = Result.Error(t.message.toString())
             }
         })
-        val localData=movieDao.getMovies()
-        result.addSource(localData){
-            newData: List<MovieEntity> ->
+        val localData = movieDao.getMovies()
+        result.addSource(localData) { newData: List<MovieEntity> ->
+            result.value = Result.Success(newData)
+        }
+        return result
+    }
+
+    fun getUpComingMovie(): LiveData<Result<List<UpcomingMovieEntity>>> {
+        val result = MediatorLiveData<Result<List<UpcomingMovieEntity>>>()
+        result.value = Result.Loading
+        val client = apiService.getUpcomingMovie()
+        client.enqueue(object : Callback<MovieResponse> {
+            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
+                if (response.isSuccessful) {
+                    val movie = response.body()?.results
+                    val listMovie = ArrayList<UpcomingMovieEntity>()
+                    appExecutors.diskIO.execute {
+                        movie?.forEach { movie ->
+                            val movieItem = UpcomingMovieEntity(
+                                movie.id,
+                                movie.title,
+                                movie.backdropPath,
+                                movie.releaseDate,
+                                movie.overview,
+                                movie.adult
+                            )
+                            listMovie.add(movieItem)
+                        }
+                        movieDao.insertUpComingMovie(listMovie)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+                result.value = Result.Error(t.message.toString())
+            }
+        })
+        val localData = movieDao.getUpComingMovies()
+        result.addSource(localData) { newData: List<UpcomingMovieEntity> ->
             result.value = Result.Success(newData)
         }
         return result

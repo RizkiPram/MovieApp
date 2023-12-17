@@ -13,14 +13,10 @@ class MovieEntity(
     val title: String,
     @field:SerializedName("poster_path")
     val posterPath: String,
-    @field:SerializedName("backdrop_path")
-    val backdropPath: String,
     @field:SerializedName("adult")
     val adult: Boolean,
     @field:SerializedName("vote_average")
     val voteAverage: Float,
-    @field:SerializedName("overview")
-    val overview: String,
     @field:SerializedName("release_date")
     val releaseDate: String,
 )

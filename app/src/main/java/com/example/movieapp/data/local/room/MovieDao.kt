@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.movieapp.data.local.entity.MovieEntity
+import com.example.movieapp.data.local.entity.UpcomingMovieEntity
 
 @Dao
 interface MovieDao {
@@ -17,4 +18,13 @@ interface MovieDao {
 
     @Query("DELETE FROM movies")
     fun deleteMovie()
+
+    @Query("SELECT * FROM upcoming_movies")
+    fun getUpComingMovies(): LiveData<List<UpcomingMovieEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertUpComingMovie(meal: List<UpcomingMovieEntity>)
+
+    @Query("DELETE FROM upcoming_movies")
+    fun deleteUpComingMovie()
 }

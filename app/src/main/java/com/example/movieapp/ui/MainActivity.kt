@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.movieapp.adapter.NowPlayingAdapter
 import com.example.movieapp.adapter.UpcomingAdapter
 import com.example.movieapp.data.local.entity.MovieEntity
-import com.example.movieapp.data.remote.response.ResultsItem
+import com.example.movieapp.data.local.entity.UpcomingMovieEntity
 import com.example.movieapp.databinding.ActivityMainBinding
 import com.example.movieapp.utils.Result
 import com.example.movieapp.viewmodel.MainViewModel
@@ -25,12 +25,13 @@ class MainActivity : AppCompatActivity() {
         setupViewModel()
 
     }
-    private fun setupViewModel(){
+
+    private fun setupViewModel() {
         val factory: ViewModelFactory = ViewModelFactory.getInstance(this)
         val viewModel: MainViewModel by viewModels {
             factory
         }
-        viewModel.getNowPlayingMovie().observe(this){result ->
+        viewModel.getNowPlayingMovie().observe(this) { result ->
             if (result != null) {
                 when (result) {
                     is Result.Loading -> {
@@ -39,8 +40,8 @@ class MainActivity : AppCompatActivity() {
 
                     is Result.Success -> {
                         binding.progressBar.visibility = View.GONE
-                        val mealData = result.data
-                        setNowPlayingMoviesData(mealData)
+                        val movieData = result.data
+                        setNowPlayingMoviesData(movieData)
                     }
 
                     is Result.Error -> {
@@ -54,11 +55,25 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        viewModel.getListUpcomingMovie()
-        viewModel.listUpcomingMovie.observe(this) {
-            setUpcomingMoviesData(it)
+        viewModel.getListUpcomingMovie().observe(this) { result ->
+            if (result != null) {
+                when (result) {
+                    is Result.Loading -> {
+                        binding.progressBar.visibility = View.VISIBLE
+                    }
+
+                    is Result.Success -> {
+                        binding.progressBar.visibility = View.GONE
+                        val movieData = result.data
+                        setUpcomingMoviesData(movieData)
+                    }
+
+                    is Result.Error -> {}
+                }
+            }
         }
     }
+
     private fun setNowPlayingMoviesData(data: List<MovieEntity>) {
         val listMovie = ArrayList<MovieEntity>()
         data.forEach {
@@ -72,24 +87,34 @@ class MainActivity : AppCompatActivity() {
             nowPlayingAdapter.setOnItemClickCallback(object :
                 NowPlayingAdapter.OnItemClickCallback {
                 override fun onItemClicked(data: MovieEntity) {
-                    val intent = Intent(this@MainActivity, DetailMovieActivity::class.java)
-                    intent.putExtra(DetailMovieActivity.MOVIE_ID, data.id)
-                    startActivity(intent)
-
+                    moveToDetailPage(data.id)
                 }
             })
         }
     }
 
-    private fun setUpcomingMoviesData(data: List<ResultsItem>) {
-        val listMovie = ArrayList<ResultsItem>()
+    private fun setUpcomingMoviesData(data: List<UpcomingMovieEntity>) {
+        val listMovie = ArrayList<UpcomingMovieEntity>()
         data.forEach {
             listMovie.add(it)
         }
         binding.rvUpcoming.apply {
-            adapter = UpcomingAdapter(listMovie)
+            val upcomingMovieAdapter = UpcomingAdapter(listMovie)
             layoutManager =
                 LinearLayoutManager(this@MainActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = upcomingMovieAdapter
+            upcomingMovieAdapter.setOnItemClickCallback(object :
+                UpcomingAdapter.OnItemClickCallback {
+                override fun onItemClicked(data: UpcomingMovieEntity) {
+                    moveToDetailPage(data.id)
+                }
+            })
         }
+    }
+
+    private fun moveToDetailPage(id: Int) {
+        val intent = Intent(this@MainActivity, DetailMovieActivity::class.java)
+        intent.putExtra(DetailMovieActivity.MOVIE_ID, id)
+        startActivity(intent)
     }
 }
