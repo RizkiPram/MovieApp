@@ -1,7 +1,7 @@
-package com.example.movieapp.data.api
+package com.example.movieapp.data.remote.api
 
-import com.example.movieapp.data.response.DetailResponse
-import com.example.movieapp.data.response.MovieResponse
+import com.example.movieapp.data.remote.response.DetailResponse
+import com.example.movieapp.data.remote.response.MovieResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers

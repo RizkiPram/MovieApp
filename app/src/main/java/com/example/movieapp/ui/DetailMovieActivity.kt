@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.movieapp.R
 import com.example.movieapp.adapter.ProductionCompanyAdapter
-import com.example.movieapp.data.response.ProductionCompaniesItem
+import com.example.movieapp.data.remote.response.ProductionCompaniesItem
 import com.example.movieapp.databinding.ActivityDetailMovieBinding
 import com.example.movieapp.viewmodel.DetailViewModel
 

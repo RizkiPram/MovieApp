@@ -5,12 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.movieapp.R
-import com.example.movieapp.data.response.ResultsItem
+import com.example.movieapp.data.remote.response.ResultsItem
 import com.example.movieapp.databinding.ItemUpcomingMovieBinding
 
 class UpcomingAdapter (private val list : ArrayList<ResultsItem>) : RecyclerView.Adapter<UpcomingAdapter.ViewHolder>() {
     inner class ViewHolder(private val binding:ItemUpcomingMovieBinding) : RecyclerView.ViewHolder(binding.root){
-        fun itemBind(data:ResultsItem){
+        fun itemBind(data: ResultsItem){
             binding.apply {
                 if (!data.adult){
                     labelRate.setBackgroundColor(itemView.resources.getColor(R.color.green))
@@ -19,7 +19,7 @@ class UpcomingAdapter (private val list : ArrayList<ResultsItem>) : RecyclerView
                 Glide.with(itemView)
                     .load("${itemView.resources.getString(R.string.image_url)}${data.backdropPath}")
                     .into(imgUpcomingMovie)
-                tvTitleUpcomingMoview.text=data.originalTitle
+                tvTitleUpcomingMoview.text=data.title
                 tvOverviewUpcomingMoview.text=data.overview
                 tvReleasDateUpcomingMovie.text=data.releaseDate
             }

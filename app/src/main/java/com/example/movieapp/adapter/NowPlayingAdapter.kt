@@ -6,13 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.movieapp.R
-import com.example.movieapp.data.response.ResultsItem
+import com.example.movieapp.data.local.entity.MovieEntity
+import com.example.movieapp.data.remote.response.ResultsItem
 import com.example.movieapp.databinding.ItemNowPlayingMovieBinding
 
-class NowPlayingAdapter(private val list:ArrayList<ResultsItem>) : RecyclerView.Adapter<NowPlayingAdapter.ViewHolder>() {
+class NowPlayingAdapter(private val list:ArrayList<MovieEntity>) : RecyclerView.Adapter<NowPlayingAdapter.ViewHolder>() {
     private var onItemClickCallback: OnItemClickCallback ?=null
     inner class ViewHolder(private val binding:ItemNowPlayingMovieBinding) : RecyclerView.ViewHolder(binding.root){
-        fun itemBind(data:ResultsItem){
+        fun itemBind(data: MovieEntity){
             binding.apply {
                 root.setOnClickListener {
                     onItemClickCallback?.onItemClicked(data)
@@ -24,7 +25,7 @@ class NowPlayingAdapter(private val list:ArrayList<ResultsItem>) : RecyclerView.
                 Glide.with(itemView)
                     .load("${itemView.resources.getString(R.string.image_url)}${data.posterPath}")
                     .into(imgMovie)
-                tvTitleMovie.text=data.originalTitle
+                tvTitleMovie.text=data.title
                 tvDate.text = data.releaseDate
                 tvRating.text = "Rating : ${data.voteAverage}/10"
             }
@@ -45,6 +46,6 @@ class NowPlayingAdapter(private val list:ArrayList<ResultsItem>) : RecyclerView.
         this.onItemClickCallback = onItemClickCallback
     }
     interface OnItemClickCallback{
-        fun onItemClicked(data: ResultsItem)
+        fun onItemClicked(data: MovieEntity)
     }
 }

@@ -1,22 +1,22 @@
-package com.example.movieapp.data.response
+package com.example.movieapp.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 
 data class MovieResponse(
 
-	@field:SerializedName("dates")
+    @field:SerializedName("dates")
 	val dates: Dates,
 
-	@field:SerializedName("page")
+    @field:SerializedName("page")
 	val page: Int,
 
-	@field:SerializedName("total_pages")
+    @field:SerializedName("total_pages")
 	val totalPages: Int,
 
-	@field:SerializedName("results")
+    @field:SerializedName("results")
 	val results: List<ResultsItem>,
 
-	@field:SerializedName("total_results")
+    @field:SerializedName("total_results")
 	val totalResults: Int
 )
 
@@ -53,7 +53,7 @@ data class ResultsItem(
 	val popularity: Any,
 
 	@field:SerializedName("vote_average")
-	val voteAverage: Any,
+	val voteAverage: Float,
 
 	@field:SerializedName("id")
 	val id: Int,
