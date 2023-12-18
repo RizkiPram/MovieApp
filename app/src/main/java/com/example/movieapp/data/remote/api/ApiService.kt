@@ -22,6 +22,6 @@ interface ApiService {
     @GET("{movie_id}")
     @Headers("Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjZWQyNDg0YjA5Mjc1NzhiMTFmZmE5ZTM1MWY2MDJiNiIsInN1YiI6IjY1N2MxZTZkZWEzOTQ5MDBjNGZmZDg3OCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.jXcbb2ifRmtrqcK3O6XCBEQyLY-ZdA_7abQk1n1Seo4")
     fun getDetailMovie(
-        @Path("movie_id") movieId:Int
+        @Path("movie_id") movieId: Int
     ): Call<DetailResponse>
 }

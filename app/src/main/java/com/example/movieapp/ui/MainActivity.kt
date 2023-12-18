@@ -83,7 +83,7 @@ class MainActivity : AppCompatActivity() {
         }
         binding.btnLogout.setOnClickListener {
             authViewModel.logout()
-            startActivity(Intent(this@MainActivity,LoginActivity::class.java))
+            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
             finish()
         }
 

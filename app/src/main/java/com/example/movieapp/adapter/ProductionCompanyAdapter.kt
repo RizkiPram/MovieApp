@@ -17,7 +17,7 @@ class ProductionCompanyAdapter(private val data: ArrayList<ProductionCompaniesIt
                 Glide.with(itemView)
                     .load("${itemView.resources.getString(R.string.image_url)}${data.logoPath}")
                     .into(imgLogo)
-                tvCompanyName.text=data.name
+                tvCompanyName.text = data.name
             }
         }
     }

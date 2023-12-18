@@ -4,26 +4,28 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class UserPreferences private constructor(private val dataStore: DataStore<Preferences>) {
-    fun getState(): Flow<Boolean>{
+    fun getState(): Flow<Boolean> {
         return dataStore.data.map {
             it[STATE_KEY] ?: false
         }
     }
-    suspend fun saveState(state:Boolean){
+
+    suspend fun saveState(state: Boolean) {
         dataStore.edit {
             it[STATE_KEY] = state
         }
     }
+
     suspend fun logout() {
         dataStore.edit {
             it[STATE_KEY] = false
         }
     }
+
     companion object {
         @Volatile
         private var INSTANCE: UserPreferences? = null

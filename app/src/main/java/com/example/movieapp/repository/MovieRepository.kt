@@ -2,7 +2,6 @@ package com.example.movieapp.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import com.example.movieapp.data.local.datastore.UserPreferences
 import com.example.movieapp.data.local.entity.MovieEntity
 import com.example.movieapp.data.local.entity.UpcomingMovieEntity
 import com.example.movieapp.data.local.room.MovieDao
