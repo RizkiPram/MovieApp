@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="36dp"
+    android:elevation="8dp"
+    app:cardCornerRadius="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/tvDesc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Are You Sure to delete produdct Nama Product" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:cornerRadius="8dp"
+            android:text="NO"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/white"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/red_alert"
+            app:layout_constraintEnd_toStartOf="@id/guideLine"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDesc" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnYes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="YES"
+            android:textColor="@color/white"
+            app:cornerRadius="8dp"
+            android:backgroundTint="@color/red_alert"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guideLine"
+            app:layout_constraintTop_toBottomOf="@id/tvDesc" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

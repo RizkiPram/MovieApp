@@ -1,13 +1,20 @@
 package com.example.movieapp.ui
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.movieapp.R
 import com.example.movieapp.adapter.NowPlayingAdapter
 import com.example.movieapp.adapter.UpcomingAdapter
 import com.example.movieapp.data.local.datastore.UserPreferences
@@ -19,6 +26,7 @@ import com.example.movieapp.viewmodel.AuthViewModel
 import com.example.movieapp.viewmodel.AuthViewModelFactory
 import com.example.movieapp.viewmodel.MainViewModel
 import com.example.movieapp.viewmodel.ViewModelFactory
+import com.google.android.material.button.MaterialButton
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -82,9 +90,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.btnLogout.setOnClickListener {
-            authViewModel.logout()
-            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-            finish()
+            showLogoutDialog()
         }
 
     }
@@ -131,5 +137,26 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this@MainActivity, DetailMovieActivity::class.java)
         intent.putExtra(DetailMovieActivity.MOVIE_ID, id)
         startActivity(intent)
+    }
+    private fun showLogoutDialog(){
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.bottom_dialog)
+        dialog.window?.setDimAmount(0.8f)
+        dialog.window?.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+        dialog.show()
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window?.setGravity(Gravity.CENTER)
+        dialog.findViewById<TextView>(R.id.tvDesc).text = "Are You Sure Want to Logout?"
+        dialog.findViewById<MaterialButton>(R.id.btnYes)?.setOnClickListener {
+            authViewModel.logout()
+            startActivity(Intent(this,LoginActivity::class.java))
+            finish()
+        }
+        dialog.findViewById<MaterialButton>(R.id.btnNo)?.setOnClickListener {
+            dialog.cancel()
+        }
     }
 }
